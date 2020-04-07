@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>downjs</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACpUlEQVRYR+2WQWgTQRSG/7dNZotW9KRYyUQrbXZFpCLisYh4EEEqRU/ePHhRKFoqHkw9FNKiSQRR9KYgnrRCDyIi1IOnWgpWzG6qHrKpFQQvgspu2n0ybYUc6u6mSeklc5xl3v/N//6ZWcIGD9pgfTQBmg4EOmAn4hMg+sm+nzfnFt6sR2ADASwpxgloB3AIzPdaoOU6y+6XRoIEAhSkflwDv2LwBQKNgHmBiHKa8PKdn+E2AiQ0hEUpHjLQYzjeHluKEQBXAUwDyBuO97heiFCAT1Ls84EZANdTjpeZla0dPnwFcgbAeL35CAVQO7RlPA/QeXDMMMq/59XcSnsy9eYjEsAEENsp9W/E/qNUuTJQbbsl4yofmbXmIxLAsgt6P8B5MB82ypWpaoipdmxqi4khAIO15iMygBK0pJglYNJwvHOrha+QEPuJcIOAvqj5qAmgmNRPMPML9v2jQReTndBPMbECOchMA2bZzf7vtNQGIFuPMfzXYQCFhOjVCKol3SAaNEruzYYA2FJMEuhPynF7Viv4cXe8u4VpCIxeAL8YdM103DtBd0VkB4pJcZoZYxqhr6vkjVUXfb8Dm3U9PgxQv5on5uyWxUq6fR6/wy6qyAC2FDaAGcPxzlYXLUi9XwMru7cBeKoR0l0lzwoT/vc9EsDKWb/PPg6Yc94HtXg2qZ/0mYeX+gy8g09pY859GVU4MsBUB7a2LQiLmZ+Z5cola5feRTEeXe4zf2cgbTqVB7UKRwYoSpEG0cVUyd1uJeK3iOiKWsxABote1vyKH2sVX8pL0OKl3bbwNIMvE2hU9ZkZT2IaZztLFfUi1j0CAYpJ/S4zH1EPDoHegjiXKnnP61atKhD6S0ZEexmUMxz3diOFI2dgPUSra0Y6husJ0QRoOvAXlXYPMBP0THQAAAAASUVORK5CYII=">
+    <style type="text/css">
+        html,body,select,input,a,button,div,p{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background-color: #888;
+        }
+        .wrapper{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 310px;
+            padding: 15px;
+            margin-left: -170px;
+            margin-top: -135px;
+            background-color: #9c8a8a;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .con .sub{
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            display: block;
+            width: 100%;
+            height: 40px;
+            margin: 20px auto;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            background-color: #fff;
+            text-align: center;
+            font-size: 16px;
+        }
+        .box{
+            text-align: center;
+        }
+        .box .btn{
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            display: inline-block;
+            margin: 0 15px;
+            width: 100px;
+            height: 40px;
+            font-size: 16px;
+            color: #fff;
+            text-align: center;
+            line-height: 40px;
+            background-color: #804e4e;
+            text-decoration: none;
+            border-radius: 4px;
+            border: 0;
+            letter-spacing: 8px;
+        }
+        .loading-box{
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        .loading-box:before{
+            display: block;
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            margin-left: -20px;
+            margin-top: -20px;
+            border-radius: 6px;
+            background-color: #777;
+        }
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 26px;
+            height: 26px;
+            margin-top: -13px;
+            margin-left: -13px;
+            animation: loading 1s infinite linear;
+            display: block;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAA0CAQAAABvcdNgAAAC/UlEQVRYw+3Xz0uTcRzA8UedPyN/TGWgm5MiZTCnbWFeomnK0kOSCyHcIUWlOuhDl3bISyVWO3gSWRZUR2Hp0VOhniQQZDAIOsZ2eP6Idwe/rMfvnrk9z5QI/D6n72ff7/Pa8+H7U1FMFkZJk2ZUOe9CGoD0+UOinN0LBznkkMFiIWpx4qTWPHSEhsZP7MVAVODCjRuneSiFhobGSlGQHbdVaEFAGTyFICoF46bePFTFD0FtFoQcgmmnzMpwGBOQxt3TIOqy31NndeR9FdABVfkgymgXjMP6EPeQEdRTacJmsvX67PdUljKb3gkopUtoht+MZetOwdiLnZ677DIt/yvs/EJDI5m35zHkolyKl+HARw8NJ8P7pEiRYodhqcMdkhzJ0UIrAo14CRAgQI8xlCLFe66WtHjV0CUQA2iQAx2VZIkmS4iNDvw6pjdnCtPEEkkddsAt00wDfTrETwc244ZdfNJR30xDPTrmGjWnNx5mp2TIS2MxzSuZZp/vllLnw4fD0op3Uf59YYAt9qRniwHL72shSEh6grQoBswee2xZhnKZECGC+aDts4cG2M5hEiWkrtWAuk3rxSD9P2eWjXt8YAO/6Z5tTBDGI58fjBv3s0aCBAnipqEJIkSIMI7r9IZOXgikNChChJE8exL1zLGpY75YSt2kjpqin2q5yXU+65BN5izcCxRFoZp+pnTYpHSRYV3HvCyQ4cL77JCOChtDa9yUunl5wwrevK/tZJZZOqWoi3EBPTj5g58NPjIuH4+4xCpx4rzNC82hovJEPvNQjocw4SLvgDwkTpw4Md2RLEqUrmx9HhUVlaFSst3GuoBC2ViUZZaJZusBAS3SbB1aFMzrvyll+fjR3ccfCSpslekVTJw+XVSCFIUrAlItXQ6w8Uowz07EcyBF4b6ApqkwD40IZp32glAzC4K6YR6KCWhKihtAikJQQPNWoVUuFwXV8BgVlVkrQyFGDF9O3BBSFDqZYUZeIUqZW3mgs99/pQl7flA3UZ7TbbbfH2Ist6VkGxDNAAAAAElFTkSuQmCC);
+        }
+        @keyframes loading {
+            0% {
+                transform: rotate(0) translateZ(0);
+            }
+            100% {
+                transform: rotate(360deg) translateZ(0);
+            }
+        }
+        .show-url{
+            position: relative;
+            margin-top: -20px;
+            overflow: hidden;
+        }
+        .show-url .url{
+            position: absolute;
+            left: -9999px;
+            /* float: left; */
+            /* width: 60%; */
+        }
+        .show-url .copy{
+            /* float: right; */
+            /* width: 30%; */
+        }
+    </style>
+</head>
+<body>
+    <form class="" action="./download_source.html" method="post">
+        <div class="wrapper">
+            <div class="con">
+                <select class="cdn-list sub" name="cdn_list">
+                    <option value="">请选择cdn域名...</option>
+                    <option value="https://unpkg.com/" selected>unpkg</option>
+                </select>
+                <input class="liberey-name sub" type="text" name="liberey_name" placeholder="请输入js库名..." autocomplete='on' onfocus="this.value=''">
+                <input class="liberey-version sub" type="text" name="liberey_version" placeholder="请输入js版本号..." autocomplete='on' onfocus="this.value=''">
+                <div class="show-url">
+                    <input class="url sub" type="text"  value="" placeholder="url..." >
+                    <select class="copy sub">
+                        <option value="0" selected>copyUrl</option>
+                        <option value="1">copyScript</option>
+                    </select>
+                </div>
+            </div>
+            <div class="box">
+                <a class="btn-down btn" href="javascript:;" download="aa">下载</a>
+                <button class="btn" type="submit" name="button">重置</button>
+            </div>
+            <div class="loading-box">
+                <i class="loading"></i>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+        var _src;
+        var btn_down = getEl('.btn-down');
+        btn_down.onclick = function (){
+            var cdn = getEl('.cdn-list');
+            var liberey_name = getEl('.liberey-name');
+            var liberey_version = getEl('.liberey-version');
+            var is_compress = getEl('.is-compress');
+            var js_or_css = getEl('.js-or-css');
+            _src = cdn.value + liberey_name.value + '@' + String(liberey_version.value ? liberey_version.value:'latest');
+            getEl('.loading-box').style.display = 'block';
+            loadXMLDoc(_src,String(liberey_version.value ? liberey_version.value:'latest'))
+        }
+        getEl('.copy').onchange = function () {
+            if (this.value == 0) {
+                getEl('.url').select();
+            } else {
+                getEl('.url').value = '<script src="' + getEl('.url').value + '" charset="utf-8"><\/script>'
+                getEl('.url').select();
+            }
+            if (document.execCommand("Copy")) {
+                popTip({
+                    txt: '复制成功',
+                    after: function () {
+                        getEl('.btn[type="submit"]').click();
+                    }
+                })
+            } else {
+                popTip({txt: '复制失败'})
+            }
+            document.execCommand("Copy");
+        }
+        function getEl(sel){
+            return document.querySelector(sel);
+        }
+        getEl('.loading-box').onclick = function () {
+            this.style.display = 'none'
+        }
+        function loadXMLDoc(url,v){
+            var xmlhttp;
+
+            if (window.XMLHttpRequest){
+                // code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp=new XMLHttpRequest();
+            }
+            else{
+                // code for IE6, IE5
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.open("GET",url,true);
+            xmlhttp.send();
+            xmlhttp.onreadystatechange = function(){
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+                    popTip({
+                        txt: '已加载资源',
+                        before: function () {
+                            getEl('.loading-box').style.display = 'none';
+                            getEl('.url').value = xmlhttp.responseURL;
+                        },
+                        after:function () {
+                            var scriptEL = document.createElement('script');
+                            scriptEL.type = 'text/javascript';
+                            scriptEL.src = xmlhttp.responseURL;
+                            document.body.appendChild(scriptEL);
+                        }
+                    })
+                }
+                if (xmlhttp.readyState == 4 && xmlhttp.status != 200 ) {
+                    popTip({
+                        txt: '资源不存在',
+                        before: function () {
+                            getEl('.loading-box').style.display = 'none';
+                            getEl('.url').value = '';
+                        }
+                    })
+                }
+            }
+        }
+        function popTip(opt) {
+            var optDefault = {
+                    txt: '请输入提示语...',
+                    before: null,
+                    after: null,
+                    delay: 1000,
+                    wrapper: '.wrapper'
+                },
+                getEl = function (sel) {
+                    return document.querySelector(sel);
+                },
+                mergeOpt = function (old,newer) {
+                    for (var p in old) {
+                        if (old.hasOwnProperty(p) && newer.hasOwnProperty(p)) {
+                            old[p] = newer[p]
+                        }
+                    }
+                    return old
+                },
+                opt = mergeOpt(optDefault,opt),
+                str = '',
+                wrapper = null,
+                box = null;
+            if (!!opt.before && typeof opt.before === 'function') {
+                opt.before();
+            }
+            wrapper = getEl(opt.wrapper);
+
+            if (typeof wrapper.querySelector('#box-tip') === 'object' && wrapper.querySelector('#box-tip') != null){
+                try {
+                    clearTimeout(timer);
+                    wrapper.removeChild(getEl('#box-tip'));
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+            box = document.createElement('div');
+            box.setAttribute('style','background-color:rgba(0,0,0,.2);position:absolute;top: 0;left: 0;width: 100%;')
+            str = '<p style="text-align:center;color:#fff;font-size:16px;padding:6px;">'+opt.txt+'</p>';
+            box.id = 'box-tip';
+            box.innerHTML = str;
+            wrapper.appendChild(box);
+            var timer = setTimeout(function () {
+                wrapper.removeChild(box);
+                if (!!opt.after && typeof opt.after === 'function') {
+                    opt.after();
+                }
+                clearTimeout(timer);
+            },opt.delay)
+        }
+    </script>
+</body>
+</html>
